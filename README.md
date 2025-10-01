@@ -13,7 +13,7 @@ docker compose up -d
 2. Открыть:
 - Приложение: `http://localhost:8000`
 - Prometheus: `http://localhost:9090`
-- Grafana: `http://localhost:3000` (admin/admin)
+- Grafana: `http://localhost:3000` (здесь_был_пароль)
 - Alertmanager: `http://localhost:9093`
 
 ## Что входит
