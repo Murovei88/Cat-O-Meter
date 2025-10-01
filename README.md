@@ -37,16 +37,3 @@ docker compose up -d
 
 ## Публикация наружу
 - Cloudflare Tunnel (без портов) или Traefik/Caddy (авто-HTTPS на домене).
-
-## Git
-```bash
-git init
-git add .
-git commit -m "init: cat-api + monitoring stack"
-# HTTPS или SSH (рекомендуется)
-git remote add origin git@github.com:YOUR_USER/Cat-O-Meter.git
-git branch -M main
-git push -u origin main
-```
-
-
