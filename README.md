@@ -34,18 +34,6 @@ docker compose up -d
 - Loki: `monitoring/loki/config.yml`
 - Promtail: `monitoring/promtail/config.yml`
 
-## Полезные команды
-```bash
-# Targets Prometheus
-xdg-open http://localhost:9090/targets || open http://localhost:9090/targets
-
-# Пересоздать Grafana (провижининг)
-docker compose up -d --force-recreate grafana
-
-# Логи Loki/Promtail
-docker compose logs loki --tail=200
-docker compose logs promtail --tail=200
-```
 
 ## Публикация наружу
 - Cloudflare Tunnel (без портов) или Traefik/Caddy (авто-HTTPS на домене).
