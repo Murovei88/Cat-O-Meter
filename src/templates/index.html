@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat-O-Meter Game 🐱</title>
+    <link rel="stylesheet" href="/static/css/game.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Анимированный фон -->
+        <div class="background">
+            <div class="cat-silhouette"></div>
+            <div class="cat-silhouette"></div>
+            <div class="cat-silhouette"></div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="content">
+            <header class="header">
+                <h1 class="title">🐱 Cat-O-Meter</h1>
+                <p class="subtitle">Узнай, насколько ты котик!</p>
+            </header>
+
+            <main class="main">
+                <!-- Форма ввода -->
+                <div class="input-section" id="inputSection">
+                    <div class="input-container">
+                        <input type="text" id="nameInput" placeholder="Введите ваше имя..." maxlength="50" class="name-input">
+                        <button onclick="checkCatPercentage()" class="check-btn" id="checkBtn">
+                            <span class="btn-text">Проверить 🐾</span>
+                            <span class="btn-loading" style="display: none;">Загрузка...</span>
+                        </button>
+                    </div>
+                    <p class="hint">Например: "Алексей", "Мария", "Котик"</p>
+                </div>
+
+                <!-- Результат -->
+                <div class="result-section" id="resultSection" style="display: none;">
+                    <div class="result-card">
+                        <h2 id="resultName" class="result-name"></h2>
+                        
+                        <div class="percentage-display">
+                            <span id="resultPercentage" class="percentage"></span>
+                            <span class="percent-symbol">%</span>
+                        </div>
+                        
+                        <!-- Анимированный прогресс-бар (без текстового) -->
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div id="progressFill" class="progress-fill"></div>
+                            </div>
+                        </div>
+                        
+                        <p id="resultPhrase" class="result-phrase"></p>
+                        
+                        <div class="cat-emoji" id="catEmoji">🐱</div>
+                        
+                        <button onclick="resetGame()" class="again-btn">Попробовать ещё раз 🔄</button>
+                    </div>
+                </div>
+
+                <!-- Статистика -->
+                <div class="stats-section">
+                    <div class="stats-card">
+                        <h3>📊 Глобальная статистика</h3>
+                        <div id="globalStats" class="stats-content">
+                            Загрузка...
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="footer">
+                <div class="footer-links">
+                    <a href="/help-for-admin" class="footer-link">👨‍💻 Для администраторов</a>
+                    <a href="/docs" class="footer-link">📖 API Документация</a>
+                    <a href="/health" class="footer-link">❤️ Статус сервиса</a>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="/static/js/game.js"></script>
+</body>
+</html>

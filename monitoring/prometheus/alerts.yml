@@ -1,0 +1,100 @@
+groups:
+  - name: api.availability
+    rules:
+      - alert: HealthcheckDown
+        expr: probe_success{job="blackbox-http"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "/health недоступен"
+          description: "HTTP проверка /health не проходит на {{ $labels.instance }}"
+
+      - alert: PingDown
+        expr: probe_success{job="blackbox-ping"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "ICMP ping недоступен"
+          description: "Пинг до {{ $labels.instance }} не проходит"
+
+  - name: api.errors
+    rules:
+      - alert: High5xxRate
+        expr: |
+          sum(rate(http_requests_total{status=~"5.."}[5m]))
+            /
+          sum(rate(http_requests_total[5m])) > 0.02
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Доля 5xx > 2%"
+          description: "Высокая доля 5xx ответов у API"
+
+      - alert: High4xxRate
+        expr: |
+          sum(rate(http_requests_total{status=~"4.."}[5m]))
+            /
+          sum(rate(http_requests_total[5m])) > 0.1
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Доля 4xx > 10%"
+          description: "Подозрительный рост клиентских ошибок"
+
+  - name: api.performance
+    rules:
+      - alert: HighLatencyP95
+        expr: |
+          histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket[5m]))) > 0.5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "p95 > 500ms"
+          description: "95-й перцентиль времени ответа превышает 500мс"
+
+  - name: host.resources
+    rules:
+      - alert: HighLoadAverage
+        expr: (node_load1 / count(count by (cpu) (node_cpu_seconds_total{mode="system"}))) > 1.5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокий LA на ядро"
+          description: "Load Average на ядро превышает 1.5"
+
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes > 0.9
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Память > 90%"
+          description: "Занято более 90% оперативной памяти"
+
+      - alert: LowDiskSpace
+        expr: |
+          (1 - node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs"}) > 0.85
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Диск > 85%"
+          description: "Недостаточно свободного места на файловой системе"
+
+  - name: containers.health
+    rules:
+      - alert: ContainerRestarts
+        expr: changes(container_last_seen[10m]) > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Рестарты контейнеров"
+          description: "Выявлены недавние рестарты контейнеров"
+
